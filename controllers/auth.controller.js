@@ -1,5 +1,5 @@
 //const ArticleService = require("../services/ArticleService");
-const User = require("../models/user");
+const User = require("../models/user.js");
 const bcrypt = require("bcryptjs");
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");

@@ -13,7 +13,7 @@ module.exports = async (req, res, next) => {
     const response = await jwt.verify(token, process.env.JWT_SECRET);
     if (response._id) {
       const { _id } = response;
-      const userdata = User.findById(_id);
+      const userdata = await User.findById(_id);
       if (userdata) {
         req.user = userdata;
         next();
