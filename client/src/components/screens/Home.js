@@ -17,6 +17,61 @@ const Home = () => {
         setData(result.posts);
       });
   }, []);
+  const likePost = (id) => {
+    fetch("/like", {
+      method: "put",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
+      },
+      body: JSON.stringify({
+        postId: id,
+      }),
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        console.log("Like result: ", result);
+        const newData = data.map((item) => {
+          if (item._id == result.result._id) {
+            return result.result;
+          } else {
+            return item;
+          }
+        });
+        setData(newData);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  const unlikePost = (id) => {
+    fetch("/unlike", {
+      method: "put",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
+      },
+      body: JSON.stringify({
+        postId: id,
+      }),
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        console.log("Unlike result ", result);
+        const newData = data.map((item) => {
+          if (item._id == result.result._id) {
+            return result.result;
+          } else {
+            return item;
+          }
+        });
+        setData(newData);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <div className="home">
       {data.map((item) => {
@@ -54,18 +109,18 @@ const Home = () => {
               {item.likes.includes(state._id) ? (
                 <i
                   className="material-icons"
-                  //   onClick={() => {
-                  //     unlikePost(item._id);
-                  //   }}
+                  onClick={() => {
+                    unlikePost(item._id);
+                  }}
                 >
                   thumb_down
                 </i>
               ) : (
                 <i
                   className="material-icons"
-                  //   onClick={() => {
-                  //     likePost(item._id);
-                  //   }}
+                  onClick={() => {
+                    likePost(item._id);
+                  }}
                 >
                   thumb_up
                 </i>

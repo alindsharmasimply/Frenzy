@@ -47,4 +47,38 @@ module.exports = class PostCtrl {
       console.log(error);
     }
   }
+  static async apiLikeAPost(req, res) {
+    try {
+      const result = await Post.findByIdAndUpdate(
+        req.body.postId,
+        { $push: { likes: req.user._id } },
+        { new: true }
+      ).exec();
+      if (result) {
+        res.json({ result });
+      } else {
+        return res.status(422).json({ error: "Something went wrong" });
+      }
+    } catch (error) {
+      console.log(error);
+      return res.status(422).json({ error: error });
+    }
+  }
+  static async apiUnlikeAPost(req, res) {
+    try {
+      const result = await Post.findByIdAndUpdate(
+        req.body.postId,
+        { $pull: { likes: req.user._id } },
+        { new: true }
+      ).exec();
+      if (result) {
+        res.json({ result });
+      } else {
+        return res.status(422).json({ error: "Something went wrong" });
+      }
+    } catch (error) {
+      console.log(error);
+      return res.status(422).json({ error: error });
+    }
+  }
 };
