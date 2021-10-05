@@ -3,15 +3,15 @@ const Post = require("../models/post.js");
 module.exports = class PostCtrl {
   static async apiCreatePost(req, res) {
     try {
-      const { title, body } = req.body;
-      if (!title || !body) {
+      const { title, body, pic } = req.body;
+      if (!title || !body || !pic) {
         return res.status(422).json({ error: "Please add all the fields" });
       }
       req.user.password = undefined;
       const post = new Post({
         title,
         body,
-        photo: "No photo available",
+        photo: pic,
         postedBy: req.user,
       });
       const result = await post.save();
@@ -25,9 +25,9 @@ module.exports = class PostCtrl {
 
   static async apiGetAllPosts(req, res) {
     try {
-      const mypost = await Post.find().populate("postedBy", "_id name");
-      if (mypost) {
-        res.json({ mypost });
+      const posts = await Post.find().populate("postedBy", "_id name");
+      if (posts) {
+        res.json({ posts });
       }
     } catch (error) {
       console.log(error);

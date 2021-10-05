@@ -7,7 +7,7 @@ const jwt = require("jsonwebtoken");
 module.exports = class UserCtrl {
   static async apiUserSignUp(req, res) {
     try {
-      const { email, password, name } = req.body;
+      const { email, password, name, pic } = req.body;
       if (!email || !password || !name) {
         return res.status(422).json({ error: "Please add all the fields." });
       }
@@ -25,6 +25,7 @@ module.exports = class UserCtrl {
         email,
         password: hashedPassword,
         name,
+        pic,
       };
       const response = await new User(user).save();
 
@@ -51,10 +52,10 @@ module.exports = class UserCtrl {
       if (doMatch) {
         // res.json({message:"successfully signed in"})
         const token = jwt.sign({ _id: savedUser._id }, process.env.JWT_SECRET);
-        //const { _id, name, email, followers, following, pic } = savedUser;
+        const { _id, name, email, pic } = savedUser;
         res.json({
           token,
-          //user: { _id, name, email, followers, following, pic },
+          user: { _id, name, email, pic },
         });
       } else {
         return res.status(422).json({ error: "Invalid Email or password" });
