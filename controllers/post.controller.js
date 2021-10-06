@@ -108,4 +108,17 @@ module.exports = class PostCtrl {
       return res.status(422).json({ error: error });
     }
   }
+  static async apiDeleteAPost(req, res) {
+    try {
+      const post = await Post.findOne({ _id: req.params.postId })
+        .populate("postedBy", "_id")
+        .exec();
+      if (post.postedBy._id.toString() === req.user._id.toString()) {
+        const result = await post.remove();
+        res.json(result);
+      }
+    } catch (error) {
+      return res.status(422).json({ error: error });
+    }
+  }
 };

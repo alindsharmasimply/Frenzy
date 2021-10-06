@@ -99,6 +99,22 @@ const Home = () => {
         console.log(err);
       });
   };
+  const deletePost = (postid) => {
+    fetch(`/deletepost/${postid}`, {
+      method: "delete",
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("jwt"),
+      },
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        console.log(result);
+        const newData = data.filter((item) => {
+          return item._id !== result._id;
+        });
+        setData(newData);
+      });
+  };
   return (
     <div className="home">
       {data.map((item) => {
@@ -120,7 +136,7 @@ const Home = () => {
                   style={{
                     float: "right",
                   }}
-                  //onClick={() => deletePost(item._id)}
+                  onClick={() => deletePost(item._id)}
                 >
                   delete
                 </i>
