@@ -8,5 +8,6 @@ router.get("/getAllPosts", requireLogin, PostCtrl.apiGetAllPosts);
 router.get("/myPost", requireLogin, PostCtrl.apiGetMyPost);
 router.put("/like", requireLogin, PostCtrl.apiLikeAPost);
 router.put("/unlike", requireLogin, PostCtrl.apiUnlikeAPost);
+router.put("/comment", requireLogin, PostCtrl.apiCommentOnAPost);
 
 module.exports = router;
