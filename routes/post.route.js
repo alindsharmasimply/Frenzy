@@ -10,5 +10,6 @@ router.put("/like", requireLogin, PostCtrl.apiLikeAPost);
 router.put("/unlike", requireLogin, PostCtrl.apiUnlikeAPost);
 router.put("/comment", requireLogin, PostCtrl.apiCommentOnAPost);
 router.delete("/deletepost/:postId", requireLogin, PostCtrl.apiDeleteAPost);
+router.get("/getsubpost", requireLogin, PostCtrl.apiGetSubPost);
 
 module.exports = router;

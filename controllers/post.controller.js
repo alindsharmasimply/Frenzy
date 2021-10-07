@@ -121,4 +121,17 @@ module.exports = class PostCtrl {
       return res.status(422).json({ error: error });
     }
   }
+  static async apiGetSubPost(req, res) {
+    try {
+      const posts = await Post.find({ postedBy: { $in: req.user.following } })
+        .populate("postedBy", "_id name")
+        .populate("comments.postedBy", "_id name")
+        .sort("-createdAt");
+      if (posts) {
+        res.json({ posts });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 };
