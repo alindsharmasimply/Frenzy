@@ -12,7 +12,7 @@ mongoose
   .catch((err) => console.log(`Error in DB connection ${err}`));
 
 app.use(express.json());
-
+//routes for the app
 app.use(require("./routes/auth.route"));
 app.use(require("./routes/post.route"));
 app.use(require("./routes/user.route"));
