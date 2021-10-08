@@ -17,9 +17,13 @@ app.use(require("./routes/auth.route"));
 app.use(require("./routes/post.route"));
 app.use(require("./routes/user.route"));
 
-app.get("/", (req, res) => {
-  res.send(`<h1>Hello!</h1>`);
-});
+if (process.env.NODE_ENV == "production") {
+  app.use(express.static("client/build"));
+  const path = require("path");
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
+  });
+}
 
 const port = process.env.PORT || 8000;
 app.listen(port, () => {
