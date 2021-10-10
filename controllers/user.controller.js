@@ -90,4 +90,17 @@ module.exports = class UserCtrl {
       return res.status(422).json({ error: "Pic cannot be posted" });
     }
   }
+  static async apiSearchUsers(req, res) {
+    try {
+      let userPattern = new RegExp("^" + req.body.query);
+      const user = await User.find({ email: { $regex: userPattern } }).select(
+        "_id email"
+      );
+      if (user) {
+        res.json({ user });
+      }
+    } catch (error) {
+      console.log(err);
+    }
+  }
 };
